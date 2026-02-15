@@ -66,7 +66,8 @@
       // 4. Dostupne boje: 'from-purple-500 to-pink-500', 'from-blue-500 to-cyan-500',
       //    'from-orange-500 to-red-500', 'from-green-500 to-emerald-500',
       //    'from-yellow-500 to-amber-500', 'from-indigo-500 to-purple-500',
-      //    'from-rose-500 to-pink-500', 'from-teal-500 to-cyan-500'
+      //    'from-rose-500 to-pink-500', 'from-teal-500 to-cyan-500', 'from-blue-500 to-cyan-500', 'from-orange-500 to-red-500',
+      //    'from-orange-500 to-red-500',
 
       let state = {
         automations: JSON.parse(
@@ -74,39 +75,9 @@
             JSON.stringify([
               {
                 id: 1,
-                name: 'Automatizacija 1',
-                url: '',
+                name: 'Bosna - sajt',
+                url: 'https://bektas.app.n8n.cloud/webhook/8f0ce6d6-66e3-4c4a-b176-e5321b84c206',
                 color: 'from-purple-500 to-pink-500',
-              },
-              {
-                id: 2,
-                name: 'Automatizacija 2',
-                url: '',
-                color: 'from-blue-500 to-cyan-500',
-              },
-              {
-                id: 3,
-                name: 'Automatizacija 3',
-                url: '',
-                color: 'from-orange-500 to-red-500',
-              },
-              {
-                id: 4,
-                name: 'Automatizacija 4',
-                url: '',
-                color: 'from-green-500 to-emerald-500',
-              },
-              {
-                id: 5,
-                name: 'Automatizacija 5',
-                url: '',
-                color: 'from-yellow-500 to-amber-500',
-              },
-              {
-                id: 6,
-                name: 'Automatizacija 6',
-                url: '',
-                color: 'from-indigo-500 to-purple-500',
               },
             ]),
         ),
@@ -115,7 +86,7 @@
         cooldowns: {}, // Track last trigger time for each automation
       };
 
-      const COOLDOWN_SECONDS = 3; // Prevent triggering again for 3 seconds
+      const COOLDOWN_SECONDS = 30; // Prevent triggering again for 3 seconds
 
       function isInCooldown(id) {
         const now = Date.now();
