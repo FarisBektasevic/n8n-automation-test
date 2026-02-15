@@ -89,7 +89,7 @@
         cooldowns: {}, // Track last trigger time for each automation
       };
 
-      const COOLDOWN_SECONDS = 3; // Prevent triggering again for 3 seconds
+      const COOLDOWN_SECONDS = 30; // Prevent triggering again for 3 seconds
 
       function isInCooldown(id) {
         const now = Date.now();
