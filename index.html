@@ -1,93 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <title>Taman AI</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>n8n Automatizacije</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      body {
-        overscroll-behavior: none;
-        -webkit-tap-highlight-color: transparent;
-      }
-      .shine-effect {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          to right,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        transform: translateX(-100%);
-        transition: transform 1s;
-      }
-      button:active .shine-effect {
-        transform: translateX(100%);
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
+        body {
+            overscroll-behavior: none;
+            -webkit-tap-highlight-color: transparent;
         }
-      }
-      .animate-spin {
-        animation: spin 1s linear infinite;
-      }
+        .shine-effect {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 1s;
+        }
+        button:active .shine-effect {
+            transform: translateX(100%);
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
-  </head>
-  <body
-    class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white"
-  >
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
     <div id="app" class="min-h-screen p-4 pb-8"></div>
 
     <script>
-      // Simple state management
-      let state = {
-        automations: JSON.parse(
-          localStorage.getItem('n8n_automations') ||
-            JSON.stringify([
-              {
-                id: 1,
-                name: 'Bosna',
-                url: 'https://bektas.app.n8n.cloud/webhook/8f0ce6d6-66e3-4c4a-b176-e5321b84c206',
-                color: 'from-blue-500 to-cyan-500',
-              },
-            ]),
-        ),
-        editMode: false,
-        triggering: null,
-        feedback: null,
-      };
+        // Simple state management
+        let state = {
+            automations: JSON.parse(localStorage.getItem('n8n_automations') || JSON.stringify([
+                { id: 1, name: 'Automatizacija 1', url: '', color: 'from-purple-500 to-pink-500' },
+                { id: 2, name: 'Automatizacija 2', url: '', color: 'from-blue-500 to-cyan-500' },
+                { id: 3, name: 'Automatizacija 3', url: '', color: 'from-orange-500 to-red-500' },
+            ])),
+            editMode: false,
+            triggering: null,
+            feedback: null
+        };
 
-      const colors = [
-        'from-purple-500 to-pink-500',
-        'from-blue-500 to-cyan-500',
-        'from-orange-500 to-red-500',
-        'from-green-500 to-emerald-500',
-        'from-yellow-500 to-amber-500',
-        'from-indigo-500 to-purple-500',
-        'from-rose-500 to-pink-500',
-        'from-teal-500 to-cyan-500',
-      ];
+        const colors = [
+            'from-purple-500 to-pink-500',
+            'from-blue-500 to-cyan-500',
+            'from-orange-500 to-red-500',
+            'from-green-500 to-emerald-500',
+            'from-yellow-500 to-amber-500',
+            'from-indigo-500 to-purple-500',
+            'from-rose-500 to-pink-500',
+            'from-teal-500 to-cyan-500',
+        ];
 
-      function saveState() {
-        localStorage.setItem(
-          'n8n_automations',
-          JSON.stringify(state.automations),
-        );
-      }
+        function saveState() {
+            localStorage.setItem('n8n_automations', JSON.stringify(state.automations));
+        }
 
-      function render() {
-        const app = document.getElementById('app');
-        app.innerHTML = `
+        function render() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
                 <!-- Header -->
                 <div class="max-w-md mx-auto pt-8 pb-6">
                     <div class="flex items-center justify-between mb-2">
@@ -98,7 +74,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h1 class="text-3xl font-black tracking-tight">Taman AI</h1>
+                                <h1 class="text-3xl font-black tracking-tight">n8n</h1>
+                                <p class="text-sm text-purple-300 font-medium">Automatizacije</p>
                             </div>
                         </div>
                         <button onclick="toggleEditMode()" class="p-3 rounded-xl transition-all duration-300 ${state.editMode ? 'bg-purple-500 shadow-lg shadow-purple-500/50' : 'bg-white/10 hover:bg-white/20'}">
@@ -112,13 +89,9 @@
 
                 <!-- Automation Buttons -->
                 <div class="max-w-md mx-auto space-y-3">
-                    ${state.automations
-                      .map(
-                        (automation, index) => `
+                    ${state.automations.map((automation, index) => `
                         <div class="relative" style="animation-delay: ${index * 50}ms">
-                            ${
-                              state.editMode
-                                ? `
+                            ${state.editMode ? `
                                 <div class="bg-white/5 backdrop-blur-lg rounded-2xl p-4 border border-white/10 space-y-3">
                                     <input
                                         type="text"
@@ -141,8 +114,7 @@
                                         Obriši
                                     </button>
                                 </div>
-                            `
-                                : `
+                            ` : `
                                 <button
                                     onclick="triggerAutomation(${automation.id})"
                                     ${state.triggering === automation.id ? 'disabled' : ''}
@@ -153,43 +125,30 @@
                                     <div class="relative flex items-center justify-between">
                                         <div class="flex items-center gap-3">
                                             <div class="bg-white/20 backdrop-blur-sm p-2 rounded-lg">
-                                                ${
-                                                  state.triggering ===
-                                                  automation.id
-                                                    ? `
+                                                ${state.triggering === automation.id ? `
                                                     <div class="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
-                                                `
-                                                    : state.feedback?.id ===
-                                                        automation.id
-                                                      ? state.feedback.type ===
-                                                        'success'
-                                                        ? `
+                                                ` : state.feedback?.id === automation.id ? (
+                                                    state.feedback.type === 'success' ? `
                                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                                         </svg>
-                                                    `
-                                                        : `
+                                                    ` : `
                                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                                         </svg>
                                                     `
-                                                      : `
+                                                ) : `
                                                     <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24">
                                                         <path d="M8 5v14l11-7z"/>
                                                     </svg>
-                                                `
-                                                }
+                                                `}
                                             </div>
                                             <div class="text-left">
                                                 <div class="text-lg font-bold tracking-tight">${automation.name}</div>
-                                                ${
-                                                  state.feedback?.id ===
-                                                  automation.id
-                                                    ? `
+                                                ${state.feedback?.id === automation.id ? `
                                                     <div class="text-sm text-white/90 font-medium">${state.feedback.message}</div>
-                                                `
-                                                    : ''
-                                                }
+                                                    ${state.feedback.detail ? `<div class="text-xs text-white/70 mt-0.5">${state.feedback.detail}</div>` : ''}
+                                                ` : ''}
                                             </div>
                                         </div>
                                         <svg class="w-8 h-8 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -197,16 +156,11 @@
                                         </svg>
                                     </div>
                                 </button>
-                            `
-                            }
+                            `}
                         </div>
-                    `,
-                      )
-                      .join('')}
+                    `).join('')}
 
-                    ${
-                      state.editMode
-                        ? `
+                    ${state.editMode ? `
                         <button
                             onclick="addAutomation()"
                             class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-lg rounded-2xl p-6 border-2 border-dashed border-white/30 hover:border-white/50 transition-all flex items-center justify-center gap-2 text-white/70 hover:text-white"
@@ -216,14 +170,10 @@
                             </svg>
                             <span class="font-semibold">Dodaj automatizaciju</span>
                         </button>
-                    `
-                        : ''
-                    }
+                    ` : ''}
                 </div>
 
-                ${
-                  state.editMode
-                    ? `
+                ${state.editMode ? `
                     <div class="max-w-md mx-auto mt-6 bg-blue-500/10 backdrop-blur-lg rounded-xl p-4 border border-blue-400/30">
                         <h3 class="font-bold text-blue-300 mb-2 flex items-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,100 +182,137 @@
                             Kako koristiti:
                         </h3>
                         <ol class="text-sm text-blue-200 space-y-1 list-decimal list-inside">
-                            <li>U n8n-u napravi Webhook trigger</li>
-                            <li>Kopiraj Webhook URL</li>
+                            <li>U n8n-u napravi Webhook trigger (<strong>GET</strong> metod)</li>
+                            <li>Kopiraj <strong>Production</strong> Webhook URL</li>
                             <li>Zalepi URL u polje iznad</li>
+                            <li>Aktiviraj workflow (toggle ON)</li>
                             <li>Isključi režim podešavanja</li>
                             <li>Pritisni dugme za pokretanje!</li>
                         </ol>
+                        <p class="text-xs text-blue-300 mt-3">💡 Aplikacija šalje GET zahtev sa query parametrima</p>
                     </div>
-                `
-                    : ''
-                }
+                    
+                    <div class="max-w-md mx-auto mt-3 bg-red-500/10 backdrop-blur-lg rounded-xl p-4 border border-red-400/30">
+                        <h3 class="font-bold text-red-300 mb-2 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            Problem sa greškom?
+                        </h3>
+                        <div class="text-sm text-red-200 space-y-2">
+                            <p><strong>CORS greška:</strong> U n8n webhook-u postavi "Respond Immediately" ili dodaj CORS headers</p>
+                            <p><strong>404:</strong> URL nije ispravan ili workflow nije aktivan</p>
+                            <p><strong>Za detaljne greške:</strong> Otvori browser Console (F12 na desktopu) i pogledaj crvene poruke</p>
+                        </div>
+                    </div>
+                ` : ''}
             `;
-      }
+        }
 
-      function toggleEditMode() {
-        state.editMode = !state.editMode;
-        render();
-      }
-
-      async function triggerAutomation(id) {
-        const automation = state.automations.find(a => a.id === id);
-
-        if (!automation.url) {
-          state.feedback = {
-            type: 'error',
-            id,
-            message: 'URL nije postavljen',
-          };
-          render();
-          setTimeout(() => {
-            state.feedback = null;
+        function toggleEditMode() {
+            state.editMode = !state.editMode;
             render();
-          }, 2000);
-          return;
         }
 
-        state.triggering = id;
-        render();
+        async function triggerAutomation(id) {
+            const automation = state.automations.find(a => a.id === id);
+            
+            if (!automation.url) {
+                state.feedback = { type: 'error', id, message: 'URL nije postavljen', detail: '' };
+                render();
+                setTimeout(() => {
+                    state.feedback = null;
+                    render();
+                }, 3000);
+                return;
+            }
 
-        try {
-          const response = await fetch(automation.url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              triggered_at: new Date().toISOString(),
-              source: 'mobile_app',
-            }),
-          });
+            state.triggering = id;
+            render();
 
-          if (response.ok) {
-            state.feedback = { type: 'success', id, message: 'Aktivirano!' };
-          } else {
-            state.feedback = { type: 'error', id, message: 'Greška!' };
-          }
-        } catch (error) {
-          state.feedback = { type: 'error', id, message: 'Greška!' };
+            try {
+                // Dodaj query parametre u URL
+                const url = new URL(automation.url);
+                url.searchParams.append('triggered_at', new Date().toISOString());
+                url.searchParams.append('source', 'mobile_app');
+                
+                console.log('Šaljem GET zahtev ka:', url.toString());
+                
+                const response = await fetch(url.toString(), {
+                    method: 'GET'
+                });
+
+                console.log('Status:', response.status);
+
+                if (response.ok) {
+                    state.feedback = { type: 'success', id, message: '✓ Aktivirano!', detail: '' };
+                } else {
+                    state.feedback = { 
+                        type: 'error', 
+                        id, 
+                        message: `HTTP ${response.status}`,
+                        detail: response.status === 404 ? 'Webhook ne postoji' : 
+                                response.status === 401 ? 'Neautorizovan' :
+                                response.status === 500 ? 'n8n server greška' : 'Proveri workflow'
+                    };
+                }
+            } catch (error) {
+                console.error('Greška:', error);
+                
+                let errorMsg = 'Greška';
+                let detail = '';
+                
+                if (error.message.includes('Failed to fetch')) {
+                    errorMsg = 'CORS problem';
+                    detail = 'Proveri n8n webhook podešavanja';
+                } else if (error.message.includes('NetworkError')) {
+                    errorMsg = 'Nema interneta';
+                    detail = 'Proveri konekciju';
+                } else {
+                    errorMsg = 'Greška';
+                    detail = error.message.substring(0, 30);
+                }
+                
+                state.feedback = { type: 'error', id, message: errorMsg, detail };
+            }
+
+            state.triggering = null;
+            render();
+            
+            setTimeout(() => {
+                state.feedback = null;
+                render();
+            }, 4000);
         }
 
-        state.triggering = null;
+        function updateAutomation(id, field, value) {
+            state.automations = state.automations.map(a => 
+                a.id === id ? { ...a, [field]: value } : a
+            );
+            saveState();
+            render();
+        }
+
+        function deleteAutomation(id) {
+            state.automations = state.automations.filter(a => a.id !== id);
+            saveState();
+            render();
+        }
+
+        function addAutomation() {
+            const newId = Math.max(...state.automations.map(a => a.id), 0) + 1;
+            state.automations.push({
+                id: newId,
+                name: `Automatizacija ${newId}`,
+                url: '',
+                color: colors[newId % colors.length]
+            });
+            saveState();
+            render();
+        }
+
+        // Initial render
         render();
-
-        setTimeout(() => {
-          state.feedback = null;
-          render();
-        }, 2000);
-      }
-
-      function updateAutomation(id, field, value) {
-        state.automations = state.automations.map(a =>
-          a.id === id ? { ...a, [field]: value } : a,
-        );
-        saveState();
-        render();
-      }
-
-      function deleteAutomation(id) {
-        state.automations = state.automations.filter(a => a.id !== id);
-        saveState();
-        render();
-      }
-
-      function addAutomation() {
-        const newId = Math.max(...state.automations.map(a => a.id), 0) + 1;
-        state.automations.push({
-          id: newId,
-          name: `Automatizacija ${newId}`,
-          url: '',
-          color: colors[newId % colors.length],
-        });
-        saveState();
-        render();
-      }
-
-      // Initial render
-      render();
     </script>
-  </body>
+</body>
 </html>
